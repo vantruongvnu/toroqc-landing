@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="TORO trực số — mark bát và ngọn lửa trên nền charcoal">
+  <circle cx="60" cy="60" r="56" fill="#1A252C"></circle>
+  <circle cx="60" cy="60" r="46" fill="none" stroke="#33424D" stroke-width="2" stroke-dasharray="1 9" stroke-linecap="round"></circle>
+  <g transform="translate(24 24) scale(0.6)">
+    <path d="M26 60 A36 36 0 0 0 94 60" fill="none" stroke="#FAF5EE" stroke-width="13" stroke-linecap="round"></path>
+    <path d="M60 62 C50 50 56 38 60 24 C64 38 70 50 60 62 Z" fill="#D35400"></path>
+  </g>
+</svg>

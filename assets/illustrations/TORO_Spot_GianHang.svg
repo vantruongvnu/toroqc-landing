@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Gian hàng trên sàn — điện thoại với đơn mới">
+  <circle cx="60" cy="60" r="56" fill="#F2EADD"></circle>
+  <rect x="38" y="26" width="44" height="72" rx="10" fill="#FFFFFF" stroke="#1A252C" stroke-width="4"></rect>
+  <rect x="52" y="33" width="16" height="4" rx="2" fill="#1A252C"></rect>
+  <rect x="46" y="44" width="14" height="14" rx="4" fill="#F7E0CE"></rect>
+  <rect x="64" y="46" width="11" height="4" rx="2" fill="#D8CBB2"></rect>
+  <rect x="64" y="53" width="8" height="3" rx="1.5" fill="#E5DBCB"></rect>
+  <rect x="46" y="63" width="14" height="14" rx="4" fill="#F2EADD"></rect>
+  <rect x="64" y="65" width="11" height="4" rx="2" fill="#D8CBB2"></rect>
+  <rect x="64" y="72" width="8" height="3" rx="1.5" fill="#E5DBCB"></rect>
+  <rect x="46" y="84" width="28" height="8" rx="4" fill="#C24A00"></rect>
+  <circle cx="84" cy="30" r="11" fill="#D35400" stroke="#F2EADD" stroke-width="3"></circle>
+  <g transform="translate(70.8 20.3) scale(0.22)">
+    <path d="M60 62 C50 50 56 38 60 24 C64 38 70 50 60 62 Z" fill="#FAF5EE"></path>
+  </g>
+  <path d="M92 15 A17 17 0 0 1 101 30" fill="none" stroke="#E2702A" stroke-width="3" stroke-linecap="round" opacity=".8"></path>
+  <path d="M95 13 A21 21 0 0 1 105 30" fill="none" stroke="#E2702A" stroke-width="3" stroke-linecap="round" opacity=".35"></path>
+</svg>

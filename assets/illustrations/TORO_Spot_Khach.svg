@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Đơn về tay khách — điểm đến trên bản đồ">
+  <circle cx="60" cy="60" r="56" fill="#F2EADD"></circle>
+  <path d="M16 86 C32 86 42 74 50 64" fill="none" stroke="#5C6B72" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"></path>
+  <path d="M62 22 C77.5 22 89 33.5 89 48 C89 65 62 92 62 92 C62 92 35 65 35 48 C35 33.5 46.5 22 62 22 Z" fill="#D35400"></path>
+  <circle cx="62" cy="47" r="10" fill="#FAF5EE"></circle>
+</svg>
