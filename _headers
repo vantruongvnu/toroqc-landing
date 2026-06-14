@@ -9,9 +9,16 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
 
-# Long-cache fingerprintable static assets
+# Images/illustrations rarely change -> long immutable cache
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# CSS/JS are NOT fingerprinted (plain names) -> must revalidate to avoid stale builds
+/assets/style.css
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/assets/main.js
+  Cache-Control: public, max-age=3600, must-revalidate
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
