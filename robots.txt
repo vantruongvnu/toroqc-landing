@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://toroqc.com/sitemap.xml

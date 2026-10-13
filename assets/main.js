@@ -6,7 +6,7 @@
 'use strict';
 
 // Set this once you deploy the Worker (see worker.js / README).
-const TORO_ENDPOINT = '__REPLACE_WITH_CF_WORKER_URL__';
+const TORO_ENDPOINT = 'https://bot-tro-ly-toro.luongvantruong-1611.workers.dev/api/leads';
 
 document.addEventListener('DOMContentLoaded', () => {
 
