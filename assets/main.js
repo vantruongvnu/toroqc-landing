@@ -9,6 +9,55 @@
 const TORO_ENDPOINT = 'https://bot-tro-ly-toro.luongvantruong-1611.workers.dev/api/leads';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // ── TURNSTILE EXPLICIT RENDER & STATE MANAGEMENT ──────────────
+  const TURNSTILE_SITE_KEY = window.TURNSTILE_SITE_KEY || '1x00000000000000000000AA'; // Test Key Cloudflare (luôn pass)
+  let currentTurnstileToken = '';
+  let turnstileWidgetId = null;
+
+  function initTurnstile() {
+    const container = document.getElementById('turnstile-container');
+    if (!container) return;
+
+    if (window.turnstile && typeof window.turnstile.render === 'function') {
+      try {
+        if (turnstileWidgetId === null) {
+          turnstileWidgetId = window.turnstile.render(container, {
+            sitekey: TURNSTILE_SITE_KEY,
+            theme: 'light',
+            callback: function (token) {
+              currentTurnstileToken = token;
+            },
+            'expired-callback': function () {
+              currentTurnstileToken = '';
+              resetTurnstile();
+            },
+            'error-callback': function () {
+              currentTurnstileToken = '';
+              resetTurnstile();
+            },
+          });
+        }
+      } catch (err) {
+        console.warn('[toro] turnstile render error:', err);
+      }
+    } else {
+      setTimeout(initTurnstile, 250);
+    }
+  }
+
+  function resetTurnstile() {
+    currentTurnstileToken = '';
+    if (turnstileWidgetId !== null && window.turnstile && typeof window.turnstile.reset === 'function') {
+      try {
+        window.turnstile.reset(turnstileWidgetId);
+      } catch (e) {
+        console.warn('[toro] turnstile reset error:', e);
+      }
+    }
+  }
+
+  initTurnstile();
+
 
   // ── REVEAL ON SCROLL ──────────────────────────────────────────
   const reveals = document.querySelectorAll('.reveal');
@@ -55,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shop_name: val('shop-name'),
         branch_count: val('branch-count'),
         platform: val('platform-select'),
-        turnstile_token: turnstileToken,
+        turnstile_token: currentTurnstileToken || (form.querySelector('[name="cf-turnstile-response"]') && form.querySelector('[name="cf-turnstile-response"]').value) || '',
         source: 'toroqc.com',
         timestamp: new Date().toISOString(),
       };
@@ -74,11 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        if (!res.ok) {
+          resetTurnstile();
+          const errData = await res.json().catch(() => ({}));
+          const errMsg = errData.error || ('HTTP ' + res.status);
+          throw new Error(errMsg);
+        }
         showFormSuccess(payload);
       } catch (err) {
         console.error('[toro] submit failed:', err);
-        showFieldError(submitBtn, 'Có lỗi khi gửi — vui lòng thử lại hoặc nhắn Zalo.');
+        resetTurnstile();
+        showFieldError(submitBtn, 'Có lỗi khi gửi (' + (err.message || 'vui lòng thử lại') + ') — hoặc nhắn Zalo.');
         submitBtn.disabled = false;
         submitBtn.textContent = original;
       }

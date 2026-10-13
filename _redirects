@@ -1,0 +1,5 @@
+# Cloudflare Pages 301 Redirects - TOROqc
+https://toroqc.vn/* https://toroqc.com/:splat 301!
+http://toroqc.vn/* https://toroqc.com/:splat 301!
+https://www.toroqc.vn/* https://toroqc.com/:splat 301!
+http://www.toroqc.vn/* https://toroqc.com/:splat 301!

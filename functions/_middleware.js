@@ -4,13 +4,11 @@
 export async function onRequest(context) {
   const url = new URL(context.request.url);
 
-  // If request arrives at toroqc.vn or www.toroqc.vn -> 301 Redirect to https://toroqc.com
+  // Đánh chặn toàn bộ request đến toroqc.vn và www.toroqc.vn ở tầng biên cao nhất
   if (url.hostname === "toroqc.vn" || url.hostname === "www.toroqc.vn") {
-    url.hostname = "toroqc.com";
-    url.protocol = "https:";
-    return Response.redirect(url.toString(), 301);
+    return Response.redirect(`https://toroqc.com${url.pathname}${url.search}`, 301);
   }
 
-  // Normal request to toroqc.com -> serve page
+  // Request hợp lệ đến toroqc.com -> phục vụ nội dung trang
   return context.next();
 }
