@@ -46,12 +46,16 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Đang gửi…';
 
+      const turnstileEl = form.querySelector('[name="cf-turnstile-response"]');
+      const turnstileToken = (turnstileEl && turnstileEl.value) || (window.turnstile && typeof window.turnstile.getResponse === 'function' ? window.turnstile.getResponse() : '') || '';
+
       const payload = {
         owner_name: val('owner-name'),
         owner_phone: phone,
         shop_name: val('shop-name'),
         branch_count: val('branch-count'),
         platform: val('platform-select'),
+        turnstile_token: turnstileToken,
         source: 'toroqc.com',
         timestamp: new Date().toISOString(),
       };
