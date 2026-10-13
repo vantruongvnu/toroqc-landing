@@ -10,7 +10,7 @@ const TORO_ENDPOINT = 'https://bot-tro-ly-toro.luongvantruong-1611.workers.dev/a
 
 document.addEventListener('DOMContentLoaded', () => {
   // ── TURNSTILE EXPLICIT RENDER & STATE MANAGEMENT ──────────────
-  const TURNSTILE_SITE_KEY = window.TURNSTILE_SITE_KEY || '1x00000000000000000000AA'; // Test Key Cloudflare (luôn pass)
+  const TURNSTILE_SITE_KEY = window.TURNSTILE_SITE_KEY || '0x4AAAAAAFVvvNYVPbOJr63A'; // Test Key Cloudflare (luôn pass)
   let currentTurnstileToken = '';
   let turnstileWidgetId = null;
 
@@ -58,6 +58,100 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initTurnstile();
 
+  // ── A/B TESTING ENGINE (CRO VARIANT A vs B) ───────────────────
+  let activeVariant = 'B'; // Ưu tiên kiểm nghiệm Biến thể B (Tinh gọn 2 ô)
+
+  function initABTesting() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let vParam = urlParams.get('v') || urlParams.get('variant');
+    if (vParam) {
+      vParam = vParam.toUpperCase();
+      activeVariant = (vParam === 'A') ? 'A' : 'B';
+      try { localStorage.setItem('toro_form_variant', activeVariant); } catch(e){}
+    } else {
+      try {
+        const stored = localStorage.getItem('toro_form_variant');
+        if (stored === 'A' || stored === 'B') {
+          activeVariant = stored;
+        } else {
+          // Phân phối ngẫu nhiên 50/50 cho khách vãng lai
+          activeVariant = Math.random() < 0.5 ? 'A' : 'B';
+          localStorage.setItem('toro_form_variant', activeVariant);
+        }
+      } catch(e) {
+        activeVariant = 'B';
+      }
+    }
+
+    renderVariantUI(activeVariant);
+
+    // Kích hoạt nút chuyển đổi nhanh trên giao diện
+    const switchA = document.getElementById('switch-variant-a');
+    const switchB = document.getElementById('switch-variant-b');
+    if (switchA) {
+      switchA.addEventListener('click', (e) => {
+        e.preventDefault();
+        activeVariant = 'A';
+        try { localStorage.setItem('toro_form_variant', 'A'); } catch(err){}
+        renderVariantUI('A');
+      });
+    }
+    if (switchB) {
+      switchB.addEventListener('click', (e) => {
+        e.preventDefault();
+        activeVariant = 'B';
+        try { localStorage.setItem('toro_form_variant', 'B'); } catch(err){}
+        renderVariantUI('B');
+      });
+    }
+  }
+
+  function renderVariantUI(v) {
+    const extraFields = document.getElementById('extra-fields');
+    const formBadge = document.getElementById('form-badge');
+    const formTitle = document.getElementById('form-title');
+    const formDesc = document.getElementById('form-desc');
+    const formCardTitle = document.getElementById('form-card-title');
+    const submitBtn = document.getElementById('form-submit-btn');
+    const switchA = document.getElementById('switch-variant-a');
+    const switchB = document.getElementById('switch-variant-b');
+
+    if (switchA && switchB) {
+      if (v === 'A') {
+        switchA.style.fontWeight = '700';
+        switchA.style.color = 'var(--charcoal-900)';
+        switchB.style.fontWeight = '400';
+        switchB.style.color = 'var(--teal-600)';
+      } else {
+        switchB.style.fontWeight = '700';
+        switchB.style.color = 'var(--charcoal-900)';
+        switchA.style.fontWeight = '400';
+        switchA.style.color = 'var(--teal-600)';
+      }
+    }
+
+    if (v === 'B') {
+      // Biến thể B: Tinh gọn 2 trường (Tên quán + SĐT Zalo)
+      if (extraFields) extraFields.style.display = 'none';
+      if (formBadge) formBadge.textContent = 'Khảo sát nhanh 30 giây';
+      if (formTitle) formTitle.textContent = 'Nhận phân tích vận hành & margin món';
+      if (formDesc) formDesc.textContent = 'Chỉ cần để lại tên quán và số Zalo — Toro gửi ngay bảng phân tích chi phí sàn và biên lợi nhuận sau 15 phút.';
+      if (formCardTitle) formCardTitle.textContent = 'Khảo sát nhanh (2 thông tin)';
+      if (submitBtn) submitBtn.textContent = 'Nhận phân tích miễn phí qua Zalo →';
+    } else {
+      // Biến thể A: Gốc 5 trường
+      if (extraFields) extraFields.style.display = 'grid';
+      if (formBadge) formBadge.textContent = 'Đăng ký tư vấn';
+      if (formTitle) formTitle.textContent = 'Nhận khảo sát vận hành miễn phí';
+      if (formDesc) formDesc.textContent = 'Để lại thông tin quán — đội TORO liên hệ trong 24h, chốt mục tiêu 30 ngày theo đúng quy mô của bạn.';
+      if (formCardTitle) formCardTitle.textContent = 'Form đăng ký quán';
+      if (submitBtn) submitBtn.textContent = 'Gửi đăng ký →';
+    }
+  }
+
+  initABTesting();
+
+
 
   // ── REVEAL ON SCROLL ──────────────────────────────────────────
   const reveals = document.querySelectorAll('.reveal');
@@ -82,6 +176,15 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       clearErrors(form);
 
+      // Validate tên quán (bắt buộc cả 2 biến thể)
+      const shopInput = document.getElementById('shop-name');
+      const shopName = (shopInput && shopInput.value || '').trim();
+      if (!shopName) {
+        showFieldError(shopInput, 'Vui lòng nhập tên quán ăn / đồ uống của bạn.');
+        shopInput.focus();
+        return;
+      }
+
       // Validate phone (the field most worth guarding)
       const phone = (phoneInput && phoneInput.value || '').replace(/[\s.]/g, '');
       if (!phonePattern.test(phone)) {
@@ -101,11 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const payload = {
         owner_name: val('owner-name'),
         owner_phone: phone,
-        shop_name: val('shop-name'),
-        branch_count: val('branch-count'),
-        platform: val('platform-select'),
+        shop_name: shopName,
+        branch_count: val('branch-count') || '1 quán',
+        platform: val('platform-select') || 'both',
         turnstile_token: currentTurnstileToken || (form.querySelector('[name="cf-turnstile-response"]') && form.querySelector('[name="cf-turnstile-response"]').value) || '',
-        source: 'toroqc.com',
+        source: 'toroqc.com [Biến thể ' + (activeVariant === 'B' ? 'B (Tinh gọn)' : 'A (Đầy đủ)') + ']',
         timestamp: new Date().toISOString(),
       };
 

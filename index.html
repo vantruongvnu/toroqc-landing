@@ -559,49 +559,66 @@ summary::-webkit-details-marker{display:none} summary{list-style:none;}
   </section>
 
   <!-- ═══════════ ĐĂNG KÝ ═══════════ -->
-  <section id="dangky" style="background:var(--cream);border-bottom:1px solid var(--cream-200)">
+    <section id="dangky" style="background:var(--cream);border-bottom:1px solid var(--cream-200)">
     <div style="max-width:860px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(16px,4vw,32px)">
       <div style="text-align:center;max-width:56ch;margin:0 auto 32px">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-600)">Đăng ký tư vấn</span>
-        <h2 style="margin:14px 0 0;font-size:clamp(24px,3.6vw,32px);font-weight:800;letter-spacing:-.02em">Nhận khảo sát vận hành miễn phí</h2>
-        <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--steam-500)">Để lại thông tin quán — đội TORO liên hệ trong 24h, chốt mục tiêu 30 ngày theo đúng quy mô của bạn.</p>
+        <span id="form-badge" style="font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-600)">Đăng ký tư vấn</span>
+        <h2 id="form-title" style="margin:14px 0 0;font-size:clamp(24px,3.6vw,32px);font-weight:800;letter-spacing:-.02em">Nhận khảo sát vận hành miễn phí</h2>
+        <p id="form-desc" style="margin:12px 0 0;font-size:15px;line-height:1.65;color:var(--steam-500)">Để lại thông tin quán — đội TORO liên hệ trong 24h, chốt mục tiêu 30 ngày theo đúng quy mô của bạn.</p>
       </div>
       <div style="background:#FFFFFF;border:1px solid var(--cream-200);border-radius:20px;box-shadow:var(--shadow-md);overflow:hidden">
         <div style="padding:16px 24px;border-bottom:1px dashed var(--cream-300);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
-          <span style="font-weight:700;font-size:15px">Form đăng ký quán</span>
+          <span id="form-card-title" style="font-weight:700;font-size:15px">Form đăng ký quán</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--steam-500)">Gửi qua kênh mã hoá · đồng bộ Lark Base · phản hồi 24h</span>
         </div>
         <form id="toro-form" class="lark-body" novalidate style="padding:24px;display:grid;gap:16px">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
-            <label for="owner-name" style="display:grid;gap:6px;font-size:13px;font-weight:600">Tên chủ quán
-              <input id="owner-name" name="owner_name" type="text" placeholder="Nguyễn Văn A" autocomplete="name" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
+          <!-- 2 TRƯỜNG CỐT LÕI (Ưu tiên hàng đầu cho Biến thể B - Tinh gọn) -->
+          <div id="row-shop-name">
+            <label for="shop-name" style="display:grid;gap:6px;font-size:13px;font-weight:600">Tên quán ăn / đồ uống <span style="color:var(--bad-500)">*</span>
+              <input id="shop-name" name="shop_name" type="text" placeholder="VD: Trà sữa Nhà Gấu, Phở 24..." autocomplete="organization" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
             </label>
-            <label for="owner-phone" style="display:grid;gap:6px;font-size:13px;font-weight:600">Số điện thoại / Zalo
+          </div>
+          <div id="row-owner-phone">
+            <label for="owner-phone" style="display:grid;gap:6px;font-size:13px;font-weight:600">Số điện thoại / Zalo để nhận báo cáo <span style="color:var(--bad-500)">*</span>
               <input id="owner-phone" name="owner_phone" type="tel" inputmode="numeric" placeholder="09xx xxx xxx" autocomplete="tel" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
             </label>
           </div>
-          <label for="shop-name" style="display:grid;gap:6px;font-size:13px;font-weight:600">Tên quán
-            <input id="shop-name" name="shop_name" type="text" placeholder="VD: Trà sữa Nhà Gấu" autocomplete="organization" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
-          </label>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
-            <label for="branch-count" style="display:grid;gap:6px;font-size:13px;font-weight:600">Số chi nhánh
-              <select id="branch-count" name="branch_count" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
-                <option value="1">1 quán</option><option value="2-3">2–3 quán</option><option value="4-9">4–9 quán</option><option value="10+">10+ quán</option>
-              </select>
+
+          <!-- CÁC TRƯỜNG MỞ RỘNG (Chỉ hiển thị đầy đủ ở Biến thể A) -->
+          <div id="extra-fields" style="display:grid;gap:16px">
+            <label for="owner-name" style="display:grid;gap:6px;font-size:13px;font-weight:600">Tên chủ quán
+              <input id="owner-name" name="owner_name" type="text" placeholder="Nguyễn Văn A" autocomplete="name" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
             </label>
-            <label for="platform-select" style="display:grid;gap:6px;font-size:13px;font-weight:600">Đang bán trên
-              <select id="platform-select" name="platform" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
-                <option value="both">GrabFood + ShopeeFood</option><option value="grab">Chỉ GrabFood</option><option value="shopee">Chỉ ShopeeFood</option><option value="none">Chưa bán trên app</option>
-              </select>
-            </label>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+              <label for="branch-count" style="display:grid;gap:6px;font-size:13px;font-weight:600">Số chi nhánh
+                <select id="branch-count" name="branch_count" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
+                  <option value="1">1 quán</option><option value="2-3">2–3 quán</option><option value="4-9">4–9 quán</option><option value="10+">10+ quán</option>
+                </select>
+              </label>
+              <label for="platform-select" style="display:grid;gap:6px;font-size:13px;font-weight:600">Đang bán trên
+                <select id="platform-select" name="platform" style="font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:16px;padding:12px 14px;border:1px solid var(--cream-300);border-radius:6px;background:#FFFFFF;color:var(--charcoal-900);width:100%">
+                  <option value="both">GrabFood + ShopeeFood</option><option value="grab">Chỉ GrabFood</option><option value="shopee">Chỉ ShopeeFood</option><option value="none">Chưa bán trên app</option>
+                </select>
+              </label>
+            </div>
           </div>
-          <!-- Cloudflare Turnstile Managed Challenge (Chống Spam Bot) -->
-                    <!-- Cloudflare Turnstile Explicit Container (Chống Spam Bot) -->
+
+          <!-- Cloudflare Turnstile Explicit Container (Chống Spam Bot) -->
           <div id="turnstile-container" class="cf-turnstile-wrapper" style="margin-bottom: 1rem; min-height: 65px;"></div>
-          <button type="submit" class="btn-cta" style="background:var(--saffron-500);color:var(--charcoal-900);font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:16px;padding:15px 24px;border:none;border-radius:6px;cursor:pointer">Gửi đăng ký →</button>
+          <button id="form-submit-btn" type="submit" class="btn-cta" style="background:var(--saffron-500);color:var(--charcoal-900);font-family:'Be Vietnam Pro',system-ui,sans-serif;font-weight:700;font-size:16px;padding:15px 24px;border:none;border-radius:6px;cursor:pointer">Gửi đăng ký →</button>
           
-          <p style="margin:0;font-size:12px;line-height:1.6;color:var(--steam-500);text-align:center">Bằng việc gửi, bạn đồng ý để TORO liên hệ tư vấn. Không spam, không chia sẻ cho bên thứ ba.</p>
+          <p id="form-guarantee" style="margin:0;font-size:12px;line-height:1.6;color:var(--steam-500);text-align:center">Bằng việc gửi, bạn đồng ý để TORO liên hệ tư vấn. Không spam, không chia sẻ cho bên thứ ba.</p>
         </form>
+
+        <!-- THANH ĐIỀU HƯỚNG A/B TESTING TRỰC QUAN (Cho anh Trường kiểm tra 2 biến thể) -->
+        <div style="padding:10px 24px;background:var(--cream-100);border-top:1px dashed var(--cream-300);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--steam-500)">
+          <span>Thử nghiệm A/B Testing:</span>
+          <div>
+            <a href="javascript:void(0)" id="switch-variant-a" style="color:var(--teal-600);text-decoration:underline;cursor:pointer">Biến thể A (5 ô chuẩn)</a>
+            <span style="margin:0 6px;color:var(--steam-350)">|</span>
+            <a href="javascript:void(0)" id="switch-variant-b" style="color:var(--teal-600);text-decoration:underline;cursor:pointer">Biến thể B (2 ô tinh gọn)</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
