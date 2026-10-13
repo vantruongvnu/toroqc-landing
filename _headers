@@ -13,6 +13,9 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+/exports/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # CSS/JS are NOT fingerprinted (plain names) -> must revalidate to avoid stale builds
 /assets/style.css
   Cache-Control: public, max-age=3600, must-revalidate

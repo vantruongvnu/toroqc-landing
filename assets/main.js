@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // never looks broken in preview / pre-deploy.
       if (!TORO_ENDPOINT || TORO_ENDPOINT.indexOf('REPLACE_WITH') !== -1) {
         console.warn('[toro] TORO_ENDPOINT not set — showing success without sending.');
-        showFormSuccess();
+        showFormSuccess(payload);
         return;
       }
 
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        showFormSuccess();
+        showFormSuccess(payload);
       } catch (err) {
         console.error('[toro] submit failed:', err);
         showFieldError(submitBtn, 'Có lỗi khi gửi — vui lòng thử lại hoặc nhắn Zalo.');
@@ -103,21 +103,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el.setAttribute) el.setAttribute('aria-invalid', 'true');
   }
 
-  function showFormSuccess() {
+  function showFormSuccess(leadData) {
     const wrap = document.querySelector('.lark-body');
     if (!wrap) return;
+    const shop = (leadData && leadData.shop_name) || 'quán';
+    const owner = (leadData && leadData.owner_name) || '';
+    const zaloMsg = encodeURIComponent('Chào anh Trường, mình là ' + (owner || 'chủ quán') + ', vừa đăng ký khảo sát vận hành cho ' + shop + ' trên toroqc.com.');
+    const zaloUrl = 'https://zalo.me/0969418898?text=' + zaloMsg;
+
     wrap.innerHTML =
-      '<div class="form-success" role="alert" aria-live="polite">' +
-        '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">' +
-          '<circle cx="32" cy="32" r="31" stroke="var(--coral)" stroke-width="2"></circle>' +
-          '<path d="M20 32l9 9 15-16" stroke="var(--coral)" stroke-width="2.5" ' +
-                'stroke-linecap="round" stroke-linejoin="round" ' +
-                'stroke-dasharray="40" stroke-dashoffset="40" ' +
-                'style="animation:draw-check .6s .2s ease forwards"></path>' +
+      '<div class="form-success" role="alert" aria-live="polite" style="text-align:center;padding:24px 12px;">' +
+        '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="margin:0 auto;display:block;">' +
+          '<circle cx="32" cy="32" r="31" stroke="var(--teal-500)" stroke-width="2"></circle>' +
+          '<path d="M20 32l9 9 15-16" stroke="var(--teal-500)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40" style="animation:draw-check .6s .2s ease forwards"></path>' +
         '</svg>' +
-        '<h3 style="margin-top:16px;">Đã nhận thông tin!</h3>' +
-        '<p class="muted" style="margin-top:8px;">TORO sẽ liên hệ trong <strong>24 giờ</strong> ' +
-          'để sắp xếp cuộc gọi khảo sát 15 phút.</p>' +
+        '<h3 style="margin-top:16px;font-size:20px;font-weight:800;color:var(--charcoal-900);">Đã nhận thông tin khảo sát!</h3>' +
+        '<p style="margin:8px 0 18px;font-size:14.5px;color:var(--steam-600);line-height:1.6;">TORO sẽ liên hệ trong 24 giờ để trao đổi phương án tối ưu vận hành cho <strong>' + (shop.replace(/</g, '&lt;')) + '</strong>.</p>' +
+        '<div style="background:var(--teal-100);border:1px solid var(--teal-200);border-radius:10px;padding:16px;max-width:440px;margin:0 auto 16px;text-align:center;">' +
+          '<div style="font-size:13.5px;font-weight:700;color:var(--teal-700);margin-bottom:8px;">⚡ Muốn trao đổi ngay không cần chờ?</div>' +
+          '<a href="' + zaloUrl + '" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;justify-content:center;background:var(--saffron-500);color:var(--charcoal-900);font-weight:700;font-size:14.5px;padding:12px 18px;border-radius:6px;text-decoration:none;width:100%;box-sizing:border-box;">' +
+            'Nhắn Zalo trực tiếp với anh Trường (Founder) →' +
+          '</a>' +
+        '</div>' +
+        '<div style="font-size:12px;color:var(--steam-500);">Hotline / Zalo: <strong>0969.418.898</strong></div>' +
       '</div>';
   }
 
